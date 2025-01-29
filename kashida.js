@@ -160,7 +160,7 @@ export function findKashidaPoints(word, algorithm = Algorithm.SIMPLE, removeExis
   if (algorithm === Algorithm.SIMPLE) {
     kashidas = findKashidaPointsSimple(word);
   } else {
-    throw new Error(`Unsupported Kashida algorithm ${algorithm}`);
+    throw new Error(`Unsupported Kashida algorithm: ${algorithm}`);
   }
 
   return [word, kashidas];

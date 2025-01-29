@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run kashida.js in Browser</title>
+    <style>
+        body {
+            width: 800px;
+            margin: auto;
+            margin-top: 10px;
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        #input,
+        #output {
+            font-family: serif;
+            font-size: 18pt;
+            white-space: normal;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <p id="options">
+        <label for="algorithm">Algorithm:</label>
+        <select id="algorithm">
+            <option value="SIMPLE">Simple</option>
+            <option value="NASKH">Naskh</option>
+        </select>
+        <label>
+            <input type="checkbox" id="removeExistingKashida" checked> Remove Existing Kashidas
+        </label>
+        <label>
+            <input type="checkbox" id="allKashidas"> Insert All Kashidas
+        </label>
+    </p>
+    <textarea dir="auto" id="input">صف خلق خود كمثل الشمس إذ بزغت يحظى الضجيع بها نجلاء معطار</textarea>
+    <p dir="auto" id="output"></p>
+    <script type="module">
+        import { makeKashidaString, Algorithm } from './kashida.js';
+
+        const inputElement = document.getElementById('input');
+        const outputElement = document.getElementById('output');
+        const algorithmSelect = document.getElementById('algorithm');
+        const removeExistingKashidaCheckbox = document.getElementById('removeExistingKashida');
+        const allKashidasCheckbox = document.getElementById('allKashidas');
+
+        let algorithm = Algorithm[algorithmSelect.value];
+        let removeExistingKashida = removeExistingKashidaCheckbox.checked;
+        let allKashidas = allKashidasCheckbox.checked;
+
+        function updateOutput() {
+            let output;
+            try {
+                output = makeKashidaString(inputElement.value, algorithm, removeExistingKashida, allKashidas);
+            } catch (error) {
+                window.alert(error);
+                output = inputElement.value;
+            }
+            outputElement.innerText = output;
+        }
+
+        algorithmSelect.addEventListener('change', () => {
+            algorithm = Algorithm[algorithmSelect.value];
+            updateOutput();
+        });
+
+        removeExistingKashidaCheckbox.addEventListener('change', () => {
+            removeExistingKashida = removeExistingKashidaCheckbox.checked;
+            updateOutput();
+        });
+
+        allKashidasCheckbox.addEventListener('change', () => {
+            allKashidas = allKashidasCheckbox.checked;
+            updateOutput();
+        });
+
+        inputElement.addEventListener('input', updateOutput);
+
+        // Initial call to display the output
+        updateOutput();
+    </script>
+</body>
+
+</html>
