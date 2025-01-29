@@ -40,7 +40,7 @@ const FEH = Object.keys(JOINING_GROUP).filter(c => [JoiningGroup.Feh, JoiningGro
 const QAF = Object.keys(JOINING_GROUP).filter(c => [JoiningGroup.Qaf, JoiningGroup.African_Qaf].includes(JOINING_GROUP[c])).map(c => String.fromCharCode(c));
 const KAF = Object.keys(JOINING_GROUP).filter(c => [JoiningGroup.Kaf, JoiningGroup.Gaf].includes(JOINING_GROUP[c])).map(c => String.fromCharCode(c));
 const LAM = Object.keys(JOINING_GROUP).filter(c => JOINING_GROUP[c] === JoiningGroup.Lam).map(c => String.fromCharCode(c));
-const HEH = Object.keys(JOINING_GROUP).filter(c => [JoiningGroup.Heh, JoiningGroup.Heh_Goal, JoiningGroup.Teh_Marbuta, JoiningGroup.Teh_Marbuta_Goal].includes(JOINING_GROUP[c])).map(c => String.fromCharCode(c));
+const HEH = Object.keys(JOINING_GROUP).filter(c => [JoiningGroup.Heh, JoiningGroup.Heh_Goal, JoiningType.Knotted_Heh, JoiningGroup.Teh_Marbuta, JoiningGroup.Teh_Marbuta_Goal].includes(JOINING_GROUP[c])).map(c => String.fromCharCode(c));
 const WAW = Object.keys(JOINING_GROUP).filter(c => JOINING_GROUP[c] === JoiningGroup.Waw).map(c => String.fromCharCode(c));
 const YEH = Object.keys(JOINING_GROUP).filter(c => [JoiningGroup.Yeh, JoiningGroup.Farsi_Yeh, JoiningGroup.Yeh_Barree, JoiningGroup.Burushaski_Yeh_Barree, JoiningGroup.Yeh_With_Tail].includes(JOINING_GROUP[c])).map(c => String.fromCharCode(c));
 const RIGHT_JOINING = Object.keys(JOINING_TYPE).filter(c => JOINING_TYPE[c] === JoiningType.Right_Joining).map(c => String.fromCharCode(c));
