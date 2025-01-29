@@ -1,6 +1,6 @@
 import {
-  _joinsLeft,
-  _joinsRight,
+  joinsLeft,
+  joinsRight,
   findKashidaPoints,
   insertKashidas,
   makeKashidaString,
@@ -28,7 +28,7 @@ describe('Kashida Tests', () => {
 
   joinsLeftCases.forEach(([word, index, expected]) => {
     it(`_joinsLeft(${word}, ${index}) should return ${expected}`, () => {
-      expect(_joinsLeft(word, index)).to.equal(expected);
+      expect(joinsLeft(word, index)).to.equal(expected);
     });
   });
 
@@ -43,7 +43,7 @@ describe('Kashida Tests', () => {
 
   joinsRightCases.forEach(([word, index, expected]) => {
     it(`_joinsRight(${word}, ${index}) should return ${expected}`, () => {
-      expect(_joinsRight(word, index)).to.equal(expected);
+      expect(joinsRight(word, index)).to.equal(expected);
     });
   });
 
