@@ -1,5 +1,4 @@
 import {
-
   _joinsLeft,
   _joinsRight,
   findKashidaPoints,
@@ -8,6 +7,7 @@ import {
   Kashida,
   Algorithm,
 } from './kashida.js';
+
 import { expect } from 'chai';
 
 

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": " A JavaScript implementation for finding Kashida insertion points",
   "main": "kashida.js",
+  "type": "module",
   "scripts": {
     "test": "mocha test.js"
   },

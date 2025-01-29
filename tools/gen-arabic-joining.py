@@ -56,7 +56,7 @@ for jg in sorted(JOINING_GROUPS):
 print(f"""
 // Generated code DO NOT EDIT
 
-const JoiningType = {{
+export const JoiningType = {{
   Right_Joining: "R",
   Left_Joining: "L",
   Dual_Joining: "D",
@@ -65,22 +65,15 @@ const JoiningType = {{
   Transparent: "T",
 }};
 
-const JoiningGroup = {{
+export const JoiningGroup = {{
   {",\n  ".join(GROUPS)}
 }};
 
-const JOINING_TYPE = {{
+export const JOINING_TYPE = {{
   {",\n  ".join(JOINING_TYPE)}
 }};
 
-const JOINING_GROUP = {{
+export const JOINING_GROUP = {{
   {",\n  ".join(JOINING_GROUP)}
-}};
-
-module.exports = {{
-  JoiningType,
-  JoiningGroup,
-  JOINING_TYPE,
-  JOINING_GROUP
 }};
 """)

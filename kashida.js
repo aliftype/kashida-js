@@ -2,9 +2,9 @@
  * A JavaScript implementation for finding Kashida insertion points.
  */
 
-const { JoiningGroup, JoiningType, JOINING_GROUP, JOINING_TYPE } = require('./arabic_joining');
+import { JoiningGroup, JoiningType, JOINING_GROUP, JOINING_TYPE } from './arabic_joining.js';
 
-class Kashida {
+export class Kashida {
   constructor(index, priority, max = null) {
     this.index = index;
     this.priority = priority;
@@ -21,7 +21,7 @@ class _Kashidas extends Array {
   }
 }
 
-const Algorithm = {
+export const Algorithm = {
   SIMPLE: 'simple',
   NASKH: 'naskh'
 };
@@ -69,7 +69,7 @@ function _getPreviousArabicLetter(text, index) {
   return _getNextArabicLetter(text, index, -1);
 }
 
-function _joinsLeft(word, index) {
+export function _joinsLeft(word, index) {
   const c1 = _getNextArabicLetter(word, index);
   if (!c1) return false;
   if (_RIGHT_JOINING.includes(c1[0])) return false;
@@ -77,7 +77,7 @@ function _joinsLeft(word, index) {
   return true;
 }
 
-function _joinsRight(word, index) {
+export function _joinsRight(word, index) {
   const c1 = _getPreviousArabicLetter(word, index);
   if (!c1) return false;
   const c2 = _getPreviousArabicLetter(word, c1[1] - 1);
@@ -151,7 +151,7 @@ function _findKashidaPointsSimple(word) {
   return kashidas;
 }
 
-function findKashidaPoints(word, algorithm = Algorithm.SIMPLE, removeExistingKashida = true) {
+export function findKashidaPoints(word, algorithm = Algorithm.SIMPLE, removeExistingKashida = true) {
   if (removeExistingKashida) {
     word = word.replace(_KASHIDA_RE, '');
   }
@@ -166,7 +166,7 @@ function findKashidaPoints(word, algorithm = Algorithm.SIMPLE, removeExistingKas
   return [word, kashidas];
 }
 
-function insertKashidas(word, kashidas, allKashidas = false) {
+export function insertKashidas(word, kashidas, allKashidas = false) {
   if (!kashidas.length) return word;
 
   if (!allKashidas) {
@@ -184,7 +184,7 @@ function insertKashidas(word, kashidas, allKashidas = false) {
   return word;
 }
 
-function makeKashidaString(text, algorithm = Algorithm.SIMPLE, removeExistingKashida = true, allKashidas = false) {
+export function makeKashidaString(text, algorithm = Algorithm.SIMPLE, removeExistingKashida = true, allKashidas = false) {
   const words = text.split(' ');
   const ret = words.map(word => {
     const [newWord, kashidas] = findKashidaPoints(word, algorithm, removeExistingKashida);
@@ -193,13 +193,3 @@ function makeKashidaString(text, algorithm = Algorithm.SIMPLE, removeExistingKas
 
   return ret.join(' ');
 }
-
-module.exports = {
-  Kashida,
-  Algorithm,
-  findKashidaPoints,
-  insertKashidas,
-  makeKashidaString,
-  _joinsLeft,
-  _joinsRight,
-};

@@ -1,7 +1,7 @@
 
 // Generated code DO NOT EDIT
 
-const JoiningType = {
+export const JoiningType = {
   Right_Joining: "R",
   Left_Joining: "L",
   Dual_Joining: "D",
@@ -10,7 +10,7 @@ const JoiningType = {
   Transparent: "T",
 };
 
-const JoiningGroup = {
+export const JoiningGroup = {
   African_Feh: 'African_Feh',
   African_Noon: 'African_Noon',
   African_Qaf: 'African_Qaf',
@@ -118,7 +118,7 @@ const JoiningGroup = {
   Zhain: 'Zhain'
 };
 
-const JOINING_TYPE = {
+export const JOINING_TYPE = {
   0x0600: JoiningType.Non_Joining, // ARABIC NUMBER SIGN,
   0x0601: JoiningType.Non_Joining, // ARABIC SIGN SANAH,
   0x0602: JoiningType.Non_Joining, // ARABIC FOOTNOTE MARKER,
@@ -952,7 +952,7 @@ const JOINING_TYPE = {
   0x1E94B: JoiningType.Transparent, // ADLAM NASALIZATION MARK "𞥋"
 };
 
-const JOINING_GROUP = {
+export const JOINING_GROUP = {
   0x0600: JoiningGroup.No_Joining_Group, // ARABIC NUMBER SIGN,
   0x0601: JoiningGroup.No_Joining_Group, // ARABIC SIGN SANAH,
   0x0602: JoiningGroup.No_Joining_Group, // ARABIC FOOTNOTE MARKER,
@@ -1784,12 +1784,5 @@ const JOINING_GROUP = {
   0x1E942: JoiningGroup.No_Joining_Group, // ADLAM SMALL KPO "𞥂",
   0x1E943: JoiningGroup.No_Joining_Group, // ADLAM SMALL SHA "𞥃",
   0x1E94B: JoiningGroup.No_Joining_Group, // ADLAM NASALIZATION MARK "𞥋"
-};
-
-module.exports = {
-  JoiningType,
-  JoiningGroup,
-  JOINING_TYPE,
-  JOINING_GROUP
 };
 
