@@ -4,6 +4,7 @@
 
 import { JoiningGroup, JoiningType, JOINING_GROUP, JOINING_TYPE } from './arabic_joining.js';
 
+// A Kashida insertion point.
 export class Kashida {
   constructor(index, priority, max = null) {
     this.index = index;
@@ -12,6 +13,8 @@ export class Kashida {
   }
 }
 
+// An array of Kashida insertion points. Makes sure that there are no more than
+// one Kashida at the same index.
 class Kashidas extends Array {
   append(kashida) {
     if (this.some(k => k.index === kashida.index)) {
@@ -21,11 +24,14 @@ class Kashidas extends Array {
   }
 }
 
+// Supported Kashida algorithms.
 export const Algorithm = {
   SIMPLE: 'simple',
   NASKH: 'naskh'
 };
 
+// Match any Kashida character that is not followed by a small alef or hamza
+// above.
 const KASHIDA_RE = /(\u0640)(?!\u0670|\u0654)/;
 
 const ALEF = Object.keys(JOINING_GROUP).filter(c => JOINING_GROUP[c] === JoiningGroup.Alef).map(c => String.fromCharCode(c));
@@ -50,6 +56,9 @@ function isArabicLetter(c) {
   return c.match(/\p{L}/u) && c.match(/\p{Script=Arab}/u);
 };
 
+// Get the next Arabic letter in a text string skipping combining marks, or None
+// if next base character is not an Arabic letter.If step is negative, it will
+// get the previous Arabic letter.
 function getNextArabicLetter(text, index, step = 1) {
   while (index >= 0 && index < text.length) {
     const c = text[index];
@@ -65,27 +74,50 @@ function getNextArabicLetter(text, index, step = 1) {
   return null;
 }
 
+// Get the previous Arabic letter in a text string skipping combining marks, or
+// None if previous base character is not an Arabic letter.
 function getPreviousArabicLetter(text, index) {
   return getNextArabicLetter(text, index, -1);
 }
 
+// Check if the character at the given index joins to the left.
 export function joinsLeft(word, index) {
+  // Get the current Letter, skipping combining marks.
   const c1 = getNextArabicLetter(word, index);
-  if (!c1) return false;
-  if (RIGHT_JOINING.includes(c1[0])) return false;
-  if (!getNextArabicLetter(word, c1[1] + 1)) return false;
+  if (!c1)
+    return false;
+
+  // If it is righ joining, then it does not join to the left.
+  if (RIGHT_JOINING.includes(c1[0]))
+    return false;
+
+  // Get the next Letter, skipping combining marks.
+  if (!getNextArabicLetter(word, c1[1] + 1))
+    return false;
+
   return true;
 }
 
+// Check if the character at the given index joins to the right.
 export function joinsRight(word, index) {
+  // Get the current Letter, skipping combining marks.
   const c1 = getPreviousArabicLetter(word, index);
-  if (!c1) return false;
+  if (!c1)
+    return false;
+
+  // Get the previous Letter, skipping combining marks.
   const c2 = getPreviousArabicLetter(word, c1[1] - 1);
-  if (!c2) return false;
-  if (RIGHT_JOINING.includes(c2[0])) return false;
+  if (!c2)
+    return false;
+
+  // If it is righ joining, then it does not join to the left.
+  if (RIGHT_JOINING.includes(c2[0]))
+    return false;
+
   return true;
 }
 
+// Check if the character at the given index is a Lam Alef ligature.
 function isLamAlef(word, index) {
   const c = word[index];
   if (ALEF.includes(c)) {
@@ -97,6 +129,9 @@ function isLamAlef(word, index) {
   return false;
 }
 
+// Find Kashida insertion points in Arabic text using Microsoft's algorithm as
+// described in:
+// https://web.archive.org/web/20130308140133/microsoft.com/middleeast/msdn/JustifyingText-CSS.aspx
 function findKashidaPointsSimple(word) {
   const kashidas = new Kashidas();
 
@@ -151,6 +186,12 @@ function findKashidaPointsSimple(word) {
   return kashidas;
 }
 
+// Find Kashida insertion points in a word.
+//
+// Args:
+//   word: A text word.
+//   remove_existing_kashida: Remove existing Kashida characters.
+//   algorithm: Kashida algorithm to use.
 export function findKashidaPoints(word, algorithm = Algorithm.SIMPLE, removeExistingKashida = true) {
   if (removeExistingKashida) {
     word = word.replace(KASHIDA_RE, '');
@@ -166,6 +207,13 @@ export function findKashidaPoints(word, algorithm = Algorithm.SIMPLE, removeExis
   return [word, kashidas];
 }
 
+// Insert kashida characters into a word.
+//
+// Args:
+//  word: A text word.
+//  kashidas: Kashida insertion points.
+//  all_kashidas: Insert all possible Kashidas in a word, default is to
+//                 insert only the Kashida with the highest priority.
 export function insertKashidas(word, kashidas, allKashidas = false) {
   if (!kashidas.length) return word;
 
@@ -184,6 +232,14 @@ export function insertKashidas(word, kashidas, allKashidas = false) {
   return word;
 }
 
+// Find possible Kashida points and insert them in a text string.
+//
+// Args:
+//  text: A text string.
+//  algorithm: Kashida algorithm to use.
+//  remove_existing_kashida: Remove existing Kashida characters.
+//  all_kashidas: Insert all possible Kashidas in a word, default is to
+//                insert only the Kashida with the highest priority.
 export function makeKashidaString(text, algorithm = Algorithm.SIMPLE, removeExistingKashida = true, allKashidas = false) {
   const words = text.split(' ');
   const ret = words.map(word => {
