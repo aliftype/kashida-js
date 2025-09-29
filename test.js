@@ -151,4 +151,19 @@ describe('Kashida Tests', () => {
       expect(makeKashidaString(text)).to.equal(expected);
     });
   });
+
+  // Test cases for line break handling
+  const lineBreakCases = [
+    ["بيت\nقال", "بيـت\nقـال"],
+    ["صف خلق\nخود كمثل", "صـف خلـق\nخـود كمثـل"],
+    ["بيت\n\nقال", "بيـت\n\nقـال"],
+    ["بيت\t\nقال", "بيـت\t\nقـال"],
+    ["الشمس\r\nإذ", "الشـمس\r\nإذ"],
+  ];
+
+  lineBreakCases.forEach(([text, expected]) => {
+    it(`makeKashidaString with line breaks: ${JSON.stringify(text)} should return ${JSON.stringify(expected)}`, () => {
+      expect(makeKashidaString(text)).to.equal(expected);
+    });
+  });
 });
