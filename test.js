@@ -159,6 +159,7 @@ describe('Kashida Tests', () => {
     ["بيت\n\nقال", "بيـت\n\nقـال"],
     ["بيت\t\nقال", "بيـت\t\nقـال"],
     ["الشمس\r\nإذ", "الشـمس\r\nإذ"],
+    ["بيت\tقال", "بيـت\tقـال"],
   ];
 
   lineBreakCases.forEach(([text, expected]) => {
