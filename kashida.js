@@ -241,11 +241,21 @@ export function insertKashidas(word, kashidas, allKashidas = false) {
 //  all_kashidas: Insert all possible Kashidas in a word, default is to
 //                insert only the Kashida with the highest priority.
 export function makeKashidaString(text, algorithm = Algorithm.SIMPLE, removeExistingKashida = true, allKashidas = false) {
-  const words = text.split(' ');
+  // Split by whitespace (spaces, tabs, newlines, etc.) to handle line breaks properly
+  const words = text.split(/\s+/);
   const ret = words.map(word => {
+    if (!word) return word; // Handle empty strings from multiple consecutive whitespace
     const [newWord, kashidas] = findKashidaPoints(word, algorithm, removeExistingKashida);
     return insertKashidas(newWord, kashidas, allKashidas);
   });
 
-  return ret.join(' ');
+  // Preserve the original whitespace structure by replacing word boundaries
+  // with the processed words while maintaining the original spacing
+  let result = text;
+  let wordIndex = 0;
+  result = result.replace(/\S+/g, (match) => {
+    return ret[wordIndex++] || match;
+  });
+
+  return result;
 }
